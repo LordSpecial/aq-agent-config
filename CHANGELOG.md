@@ -23,3 +23,5 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 - `nix/module.nix` is now a consumable module via `programs.aqAgentConfig.*` options
 - Shared asset deployment is scoped to `templates/`, `scripts/`, and `HELP.md`
 - Canonical project template source is `templates/project-agents.md` (to avoid drift)
+- Nix install now copies command/skill files into `~/.claude` and `~/.codex` so
+  tool discovery does not depend on symlink indexing

@@ -41,18 +41,6 @@ in
     home.file.".claude/settings.json".source =
       "${agentConfig}/home/claude/settings.json";
 
-    # Slash commands
-    home.file.".claude/commands" = {
-      source = "${agentConfig}/home/claude/commands";
-      recursive = true;
-    };
-
-    # Skills
-    home.file.".claude/skills" = {
-      source = "${agentConfig}/skills";
-      recursive = true;
-    };
-
     # -- Codex ------------------------------------------------------
 
     # Global instructions: AGENTS.md + Codex-specific additions
@@ -67,12 +55,6 @@ in
     home.file.".codex/config.toml".source =
       "${agentConfig}/home/codex/config.toml";
 
-    # Skills
-    home.file.".codex/skills" = {
-      source = "${agentConfig}/skills";
-      recursive = true;
-    };
-
     # -- Shared assets ---------------------------------------------
     home.file.".config/agent-config/templates" = {
       source = "${agentConfig}/templates";
@@ -86,6 +68,33 @@ in
 
     home.file.".config/agent-config/HELP.md".source =
       "${agentConfig}/HELP.md";
+
+    # Commands/skills are copied as regular files so both tools can index them.
+    # Some discovery flows ignore symlinked SKILL.md/command files.
+    home.activation.aqAgentConfigCopyDiscoverableFiles =
+      lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+        set -eu
+
+        mkdir -p "$HOME/.claude/commands" "$HOME/.claude/skills" "$HOME/.codex/skills"
+
+        for cmd_file in "${agentConfig}/home/claude/commands/"*.md; do
+          cmd_name="$(basename "$cmd_file")"
+          rm -f "$HOME/.claude/commands/$cmd_name"
+          cp "$cmd_file" "$HOME/.claude/commands/$cmd_name"
+        done
+
+        for skill_dir in "${agentConfig}/skills/"*/; do
+          skill_name="$(basename "$skill_dir")"
+
+          rm -rf "$HOME/.claude/skills/$skill_name"
+          mkdir -p "$HOME/.claude/skills/$skill_name"
+          cp -R "$skill_dir". "$HOME/.claude/skills/$skill_name/"
+
+          rm -rf "$HOME/.codex/skills/$skill_name"
+          mkdir -p "$HOME/.codex/skills/$skill_name"
+          cp -R "$skill_dir". "$HOME/.codex/skills/$skill_name/"
+        done
+      '';
 
     # -- Scripts on PATH -------------------------------------------
     home.packages = [

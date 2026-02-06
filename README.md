@@ -284,10 +284,12 @@ After either method, re-run project initialisation (`/aq-init` in Claude or
   [features]
   skills = true
   ```
+- Codex custom skills missing from `$` list:
+  re-run `home-manager switch` (or `bash scripts/install.sh`) and restart Codex.
 - Claude skills not loading:
   confirm `~/.claude/settings.json` includes `"Skill"` in `allowedTools`.
 - Claude commands missing:
-  check `~/.claude/commands/` contains expected files.
+  re-run `home-manager switch` (or `bash scripts/install.sh`) and restart Claude.
 
 ## Contributing
 
