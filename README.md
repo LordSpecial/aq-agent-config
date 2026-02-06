@@ -254,6 +254,7 @@ For a full command and skill reference for Claude Code and Codex, see
 - `task-spec`
 - `handoff`
 - `diff-review`
+- `aq-apply-feedback`
 - `commit-msg`
 - `submodule-bump`
 - `cubemx-verify`

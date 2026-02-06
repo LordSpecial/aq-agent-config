@@ -24,7 +24,19 @@ description: "Review a git diff against a TASK.md specification and produce a
 2. Resolve task context in this order:
    a. Read `HANDOFF.md` if present.
    b. Else read `TASK.md` if present.
-   c. Else infer context from user request and changed files.
+   c. Else infer context from user request, changed files, and current-branch
+      history using:
+      ```bash
+      # Commit subjects + full message bodies
+      git log --first-parent --no-merges -n 20 --pretty=format:'%h %s%n%b%n---'
+
+      # Branch-level touched-file frequency summary
+      git log --first-parent --no-merges -n 20 --name-only --pretty=format: \
+        | rg -v '^$' \
+        | sort \
+        | uniq -c \
+        | sort -nr
+      ```
 3. Perform staleness check when reading `HANDOFF.md`:
    a. Extract "Prepared at" SHA from metadata.
    b. Compare with current HEAD: `git rev-parse HEAD`.

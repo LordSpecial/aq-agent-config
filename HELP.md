@@ -47,6 +47,7 @@ for the current task.
 | `task-spec` | Build a structured `TASK.md` from a request | Planning without Claude `/aq-plan` |
 | `handoff` | Build a review handoff bundle from git context | Default: pre-commit diff from `HEAD`, plus branch history |
 | `diff-review` | Review a diff against `TASK.md` and produce `REVIEW.md` | Review-agent workflow in Codex |
+| `aq-apply-feedback` | Apply `REVIEW.md` findings and refresh review context | Execution follow-up after review comments |
 | `commit-msg` | Draft commit messages from staged changes and repo style | Before creating a commit |
 | `submodule-bump` | Bump submodule references safely | Dependency update tasks |
 | `cubemx-verify` | Validate CubeMX regeneration and repo state | STM32/CubeMX validation tasks |

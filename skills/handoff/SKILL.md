@@ -31,7 +31,18 @@ description: "Prepare review handoff context directly from git and TASK.md witho
 3. Build task context:
    - If the task file exists, include it verbatim under `## Original Task`.
    - If the task file is missing, do not block. Include `## Task Context
-     (Inferred)` using the user's request and the observed changed files.
+     (Inferred)` using the user's request, the observed changed files, and:
+     ```bash
+     # Commit subjects + full message bodies
+     git log --first-parent --no-merges -n 20 --pretty=format:'%h %s%n%b%n---'
+
+     # Branch-level touched-file frequency summary
+     git log --first-parent --no-merges -n 20 --name-only --pretty=format: \
+       | rg -v '^$' \
+       | sort \
+       | uniq -c \
+       | sort -nr
+     ```
 4. Gather review context directly with git:
    - Always show current-branch history only (avoid inherited branch noise):
      `git log --oneline --first-parent --no-merges -n 20 <working>`
