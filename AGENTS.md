@@ -88,8 +88,8 @@ or the project's skills directory.
 - If a skill conflicts with project-level instructions, the project file wins.
 - Propose new skills or improvements via `SUGGESTIONS.md` in `aq-agent-config`.
 
-In Claude Code, skills also surface as slash commands (e.g., `/plan`, `/review`,
-`/bump-defs`, `/cubemx-verify`).
+In Claude Code, skills also surface as slash commands (e.g., `/plan`, `/handoff`,
+`/review`, `/bump-defs`, `/cubemx-verify`).
 
 ## Agent Handoff
 

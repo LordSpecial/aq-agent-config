@@ -61,6 +61,7 @@ mkdir -p ~/.config/agent-config
 rm -rf ~/.config/agent-config/templates ~/.config/agent-config/scripts
 cp -r "$REPO/templates" ~/.config/agent-config/templates
 cp -r "$REPO/scripts" ~/.config/agent-config/scripts
+cp "$REPO/HELP.md" ~/.config/agent-config/HELP.md
 
 # -- Helper scripts on PATH -----------------------------------------------
 

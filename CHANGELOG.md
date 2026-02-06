@@ -7,17 +7,19 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ### Added
 - Global `AGENTS.md` baseline (including feedback, skills, and handoff guidance)
-- Claude slash commands: `/aq-init`, `/plan`, `/review`, `/bump-defs`, `/cubemx-verify`
+- Claude slash commands: `/aq-help`, `/aq-init`, `/plan`, `/handoff`, `/review`,
+  `/feedback`, `/bump-defs`, `/cubemx-verify`
 - Codex config with skills enabled
-- Shared skills: `init`, `task-spec`, `diff-review`, `commit-msg`,
-  `submodule-bump`, `cubemx-verify`
+- Shared skills: `aq-help`, `init`, `task-spec`, `handoff`, `diff-review`,
+  `commit-msg`, `submodule-bump`, `cubemx-verify`
 - Templates: `TASK.md`, `REVIEW.md`, `project-agents.md`, `project-claude.md`
 - Scripts: `handoff.sh`, `sync-projects.sh`, `validate.sh`
 - Nix Home Manager module and flake export (`flake.nix`)
 - Repository housekeeping: `.gitignore`, `LICENSE`, CI validation workflow
 - `SUGGESTIONS.md` feedback loop
+- Shared command reference at `HELP.md`
 
 ### Changed
 - `nix/module.nix` is now a consumable module via `programs.aqAgentConfig.*` options
-- Shared asset deployment is scoped to `templates/` and `scripts/` only
+- Shared asset deployment is scoped to `templates/`, `scripts/`, and `HELP.md`
 - Canonical project template source is `templates/project-agents.md` (to avoid drift)

@@ -6,6 +6,7 @@ set -euo pipefail
 required_files=(
   "AGENTS.md"
   "README.md"
+  "HELP.md"
   "CHANGELOG.md"
   "nix/module.nix"
   "templates/TASK.md"

@@ -84,6 +84,9 @@ in
       recursive = true;
     };
 
+    home.file.".config/agent-config/HELP.md".source =
+      "${agentConfig}/HELP.md";
+
     # -- Scripts on PATH -------------------------------------------
     home.packages = [
       (pkgs.writeShellScriptBin "agent-handoff"

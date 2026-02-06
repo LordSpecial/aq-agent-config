@@ -11,7 +11,8 @@ description: "Review a git diff against a TASK.md specification and produce a
 ## Inputs
 
 - The original project-local `TASK.md`
-- The git diff (provided via `agent-handoff` script or `git diff` directly)
+- The git diff (provided via `handoff` skill, `agent-handoff` script, or
+  `git diff` directly)
 
 ## Instructions
 
