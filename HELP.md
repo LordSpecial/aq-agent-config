@@ -8,17 +8,33 @@ This guide lists the global commands and skills installed by this repository.
 
 Use these as slash commands in Claude Code.
 
-| Command | Purpose | Typical use |
-|---------|---------|-------------|
-| `/aq-help` | Print the Claude help section from this file | Quick command reference in Claude |
-| `/aq-init` | Initialise or align project agent setup | First run in a new or existing project |
-| `/plan` | Generate project-local `TASK.md` | Define objective, files, checks, and constraints before execution |
-| `/handoff` | Prepare a review handoff bundle from git state | Default: changes since `HEAD` before commit/review |
-| `/review` | Run a full review against `TASK.md` and write `REVIEW.md` | First review pass after implementation |
-| `/aq-review` | Alias for review with task-context fallback | Review even when `TASK.md` is missing |
-| `/feedback` | Re-review changes against prior feedback in `REVIEW.md` | Follow-up review after `PASS WITH COMMENTS` |
-| `/bump-defs` | Bump `aq-standard-definitions` and regenerate outputs | Definition updates in `aq-*` repositories |
-| `/cubemx-verify` | Verify CubeMX regeneration integrity | STM32/CubeMX projects after regeneration |
+### Setup & Information
+
+| Command | Purpose | Output |
+|---------|---------|--------|
+| `/aq-help` | Print command reference from this file | Terminal |
+| `/aq-init` | Initialise or align project agent setup | `AGENTS.md`, `CLAUDE.md`, `.gitignore` |
+
+### Planning & Execution Workflow
+
+| Command | Purpose | Output |
+|---------|---------|--------|
+| `/aq-plan` | Generate task specification | `TASK.md` |
+| `/aq-handoff` | Prepare review request from git state | `HANDOFF.md` |
+
+### Review Workflow
+
+| Command | Purpose | Output |
+|---------|---------|--------|
+| `/aq-review` | First-pass review against task context | `REVIEW.md` |
+| `/aq-feedback` | Follow-up review after fixes | `REVIEW.md` (updated) |
+
+### Utilities
+
+| Command | Purpose | Output |
+|---------|---------|--------|
+| `/aq-bump-defs` | Bump `aq-standard-definitions` and regenerate | Git commit |
+| `/aq-cubemx-verify` | Verify CubeMX regeneration integrity | Terminal report |
 
 ## Codex Skills
 
@@ -38,17 +54,27 @@ for the current task.
 
 ## Preparing Handoff for Review
 
-Preferred: use the `handoff` skill in Codex (or `/handoff` in Claude) to produce
-review context directly from git state (including uncommitted changes).
+### Primary Method (Preferred)
 
-Script fallback:
+Use the `handoff` skill in Codex or `/aq-handoff` in Claude Code to generate
+`HANDOFF.md` directly from git state.
 
-```bash
-agent-handoff TASK.md main HEAD
+**Default behaviour:**
+- Captures staged + unstaged changes (pre-commit scope)
+- Includes current HEAD SHA for staleness detection
+- Writes project-local `HANDOFF.md`
+
+**Example usage:**
+```
+Terminal B (Codex): "Prepare handoff for review"
+Terminal A (Claude): /aq-handoff
 ```
 
-Optional: save output for review context:
+### Script Fallback (Legacy)
 
 ```bash
 agent-handoff TASK.md main HEAD > HANDOFF.md
 ```
+
+Note: The script method is provided for backwards compatibility. The skill/command
+method is preferred as it includes metadata for staleness detection.

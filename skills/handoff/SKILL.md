@@ -40,52 +40,67 @@ description: "Prepare review handoff context directly from git and TASK.md witho
    - Committed-range scope diff/stat: `git diff --stat <MERGE_BASE>..<working>`
      and `git diff <MERGE_BASE>..<working>`.
    - Untracked files: list with `git ls-files --others --exclude-standard`.
-5. Produce a handoff bundle in this structure:
+5. Gather metadata for staleness detection:
+   - Current HEAD SHA: `git rev-parse HEAD`
+   - Current timestamp (ISO 8601): `date -u +"%Y-%m-%dT%H:%M:%SZ"`
+   - Current branch: `git branch --show-current`
+6. Produce a handoff bundle following the structure in
+   `~/.config/agent-config/templates/HANDOFF.md`:
 
 ````markdown
 # Handoff: Review Request
 
-## Scope
-- Mode: <pre-commit|committed-range>
-- Working: <working ref>
-- Base: <resolved base or N/A>
-- Merge-base: <sha or N/A>
+## Metadata
+- Prepared at: `<HEAD SHA>`
+- Prepared on: `<timestamp>`
+- Branch: `<current branch>`
+- Base: `<resolved base or N/A>`
+- Merge-base: `<merge-base SHA or N/A>`
 
-## Original Task
-<TASK.md contents>
+## Task Context
+<TASK.md contents if present, otherwise inferred context>
 
-## Task Context (Inferred)
-<only when TASK.md is missing>
-
-## Commits
+## Commits (Current Branch)
 ```text
 <git log output>
 ```
 
-## Diff Summary
+## Changes Since HEAD
+
+### Summary
 ```text
-<git diff --stat output>
+<git diff --stat HEAD>
 ```
 
-## Full Diff
+### Full Diff
 ```diff
-<git diff output>
+<git diff HEAD>
 ```
 
 ## Untracked Files
 ```text
 <untracked file list or "None">
 ```
+
+## Verification
+<!-- If verification commands were run, include results here -->
+
+## Next Steps
+1. Review changes against task context
+2. Run `/aq-review` to generate `REVIEW.md`
+3. Apply feedback and regenerate this handoff if needed
 ````
 
-6. By default, print the bundle in the response.
-7. If the user asks to save it, write project-local `HANDOFF.md`.
-8. Keep `TASK.md`, `REVIEW.md`, and `HANDOFF.md` out of committed changes.
+7. Default to writing project-local `HANDOFF.md`.
+8. Only print to terminal if user explicitly requests it.
+9. Keep `TASK.md`, `REVIEW.md`, and `HANDOFF.md` out of committed changes.
 
 ## Quality Checks
 
 - Task content is included verbatim when a task file exists.
 - Missing `TASK.md` never blocks handoff generation.
+- Metadata includes HEAD SHA for staleness detection.
+- Timestamp and branch information are included.
 - Scope and refs are explicit and reproducible.
 - Pre-commit scope shows changes since `HEAD` by default.
-- Generated handoff is complete and ready to paste into review context.
+- `HANDOFF.md` is written by default (not just printed).

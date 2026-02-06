@@ -28,7 +28,7 @@ Claude (setup): "Project initialised. Updated `AGENTS.md`, created `CLAUDE.md`
 if missing, and ensured `.gitignore` ignores `TASK.md` and `REVIEW.md`."
 
 Terminal A (Claude), user:
-`/plan Add a CAN fault message when battery voltage drops below threshold.`
+`/aq-plan Add a CAN fault message when battery voltage drops below threshold.`
 
 Claude (planning): "Created `TASK.md` with acceptance criteria:
 - Publish CAN fault frame when `battery_voltage_mv < undervoltage_threshold_mv`
@@ -44,23 +44,25 @@ publish/clear logic, and added tests. Verification run:
 
 Terminal B (Codex), user: "Prepare handoff for review."
 
-Codex: "Used `handoff` skill and wrote project-local `HANDOFF.md`."
+Codex: "Used `handoff` skill and wrote project-local `HANDOFF.md` with current
+HEAD SHA for staleness detection."
 
-Terminal A (Claude), user: `/review`
+Terminal A (Claude), user: `/aq-review`
 
-Claude (review): "Verdict: PASS WITH COMMENTS.
+Claude (review): "Wrote `REVIEW.md`. Verdict: PASS WITH COMMENTS.
 Feedback:
 1. Add boundary test for exactly equal to threshold.
 2. Add test for recovery hysteresis to avoid chatter near threshold."
 
 Terminal B (Codex), user: "Apply reviewer feedback."
 
-Codex: "Added boundary and hysteresis tests, re-ran `make test` (pass)."
+Codex: "Added boundary and hysteresis tests, re-ran `make test` (pass).
+Regenerated `HANDOFF.md`."
 
-Terminal A (Claude), user: `/feedback`
+Terminal A (Claude), user: `/aq-feedback`
 
-Claude (final feedback review): "Verdict: PASS. All `TASK.md` criteria and review
-feedback addressed."
+Claude (final feedback review): "Updated `REVIEW.md` with follow-up section.
+Verdict: PASS. All `TASK.md` criteria and review feedback addressed."
 
 ## Installation
 
@@ -199,22 +201,26 @@ This initialises or aligns:
 - project `CLAUDE.md` where appropriate
 - `.gitignore` entries for `TASK.md` and `REVIEW.md`
 
-### 2) Plan -> Execute -> Review
+### 2) Plan → Execute → Review
 
-1. Create project-local `TASK.md` (for example via `/plan`).
+1. Create project-local `TASK.md` (via `/aq-plan` in Claude or `task-spec` skill in Codex).
 2. Implement against `TASK.md`.
 3. Prepare review context:
-   Preferred: use `handoff` skill in Codex (or `/handoff` in Claude) to generate
-   handoff content from current git state. Default scope is pre-commit changes
-   since `HEAD`, plus current-branch commit history.
-   If `TASK.md` is missing, handoff should infer task context and continue.
-   Script fallback (requires an existing `TASK.md`):
-   ```bash
-   agent-handoff TASK.md main HEAD
-   ```
-4. Review against `TASK.md` and write project-local `REVIEW.md`.
-   Use `/review` or `/aq-review` in Claude. For follow-up checks after comments,
-   use `/feedback`.
+   - Use `handoff` skill in Codex (or `/aq-handoff` in Claude) to generate `HANDOFF.md`
+   - Default scope: pre-commit changes (staged + unstaged) since `HEAD`
+   - Includes current HEAD SHA for staleness detection
+   - Includes current-branch commit history
+   - If `TASK.md` missing, infers task context and continues
+4. Review and write project-local `REVIEW.md`:
+   - Use `/aq-review` in Claude (reads `HANDOFF.md` and `TASK.md`)
+   - Verdict: PASS | PASS WITH COMMENTS | FAIL
+5. Apply feedback and regenerate handoff:
+   - Executing agent reads `REVIEW.md` and addresses issues
+   - Regenerate `HANDOFF.md` with updated changes
+6. Follow-up review:
+   - Use `/aq-feedback` in Claude
+   - Appends follow-up section to existing `REVIEW.md`
+   - Tracks resolution of prior issues
 
 `TASK.md`, `REVIEW.md`, and optional `HANDOFF.md` are project-level temporary
 artefacts and should not be committed.
@@ -229,13 +235,12 @@ agent-sync-projects /path/to/projects
 
 - `/aq-help` - Print the Claude command help section
 - `/aq-init` - Initialise or align project agent setup
-- `/plan` - Generate a structured task specification (`TASK.md`)
-- `/handoff` - Prepare handoff context from git state (pre-commit friendly)
-- `/review` - First-pass review of a diff against `TASK.md`
-- `/aq-review` - Review alias with task-context fallback
-- `/feedback` - Follow-up review against existing `REVIEW.md` feedback
-- `/bump-defs` - Bump `aq-standard-definitions` and regenerate
-- `/cubemx-verify` - Check CubeMX regeneration integrity
+- `/aq-plan` - Generate a structured task specification (`TASK.md`)
+- `/aq-handoff` - Prepare handoff context, write `HANDOFF.md` (pre-commit friendly)
+- `/aq-review` - First-pass review, write `REVIEW.md`
+- `/aq-feedback` - Follow-up review, append to `REVIEW.md`
+- `/aq-bump-defs` - Bump `aq-standard-definitions` and regenerate
+- `/aq-cubemx-verify` - Check CubeMX regeneration integrity
 
 ## Command Help
 
