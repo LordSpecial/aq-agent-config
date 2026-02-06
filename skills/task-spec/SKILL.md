@@ -2,7 +2,7 @@
 name: task-spec
 description: "Generate a structured task specification (TASK.md) for agent handoff.
   Use when acting as the planning agent and need to produce a work order for an
-  executing agent. Triggers: /plan command, explicit request to plan a task, or when
+  executing agent. Triggers: /aq-plan command, explicit request to plan a task, or when
   preparing work for another agent."
 ---
 

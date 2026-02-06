@@ -88,8 +88,8 @@ or the project's skills directory.
 - If a skill conflicts with project-level instructions, the project file wins.
 - Propose new skills or improvements via `SUGGESTIONS.md` in `aq-agent-config`.
 
-In Claude Code, skills also surface as slash commands (e.g., `/plan`, `/handoff`,
-`/review`, `/bump-defs`, `/cubemx-verify`).
+In Claude Code, skills also surface as slash commands (e.g., `/aq-plan`, `/aq-handoff`,
+`/aq-review`, `/aq-bump-defs`, `/aq-cubemx-verify`).
 
 ## Agent Handoff
 
@@ -101,8 +101,8 @@ handoff artefacts must stay project-level:
 2. The executing agent reads that project-local `TASK.md` as its primary work order.
 3. After execution, a review agent evaluates the diff against the same `TASK.md` and
    writes a project-local `REVIEW.md`.
-4. `TASK.md` and `REVIEW.md` are temporary artefacts; do not commit them to the
-   project repository.
+4. `TASK.md`, `REVIEW.md`, and `HANDOFF.md` are temporary artefacts; do not commit
+   them to the project repository.
 
 ## Technology-Specific Guidance (High Level)
 

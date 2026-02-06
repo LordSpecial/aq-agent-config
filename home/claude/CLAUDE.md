@@ -16,4 +16,4 @@ The following slash commands are available globally:
 ### Templates
 
 Handoff templates are at `~/.config/agent-config/templates/`.
-Generated handoff artefacts (`TASK.md`, `REVIEW.md`) should remain project-local.
+Generated handoff artefacts (`TASK.md`, `REVIEW.md`, `HANDOFF.md`) should remain project-local.

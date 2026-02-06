@@ -25,7 +25,7 @@ Use two terminals in the same project repository:
 Terminal A (Claude), user: `/aq-init`
 
 Claude (setup): "Project initialised. Updated `AGENTS.md`, created `CLAUDE.md`
-if missing, and ensured `.gitignore` ignores `TASK.md` and `REVIEW.md`."
+if missing, and ensured `.gitignore` ignores `TASK.md`, `REVIEW.md`, and `HANDOFF.md`."
 
 Terminal A (Claude), user:
 `/aq-plan Add a CAN fault message when battery voltage drops below threshold.`
@@ -199,7 +199,7 @@ This initialises or aligns:
 
 - project `AGENTS.md`
 - project `CLAUDE.md` where appropriate
-- `.gitignore` entries for `TASK.md` and `REVIEW.md`
+- `.gitignore` entries for `TASK.md`, `REVIEW.md`, and `HANDOFF.md`
 
 ### 2) Plan → Execute → Review
 

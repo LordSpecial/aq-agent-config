@@ -26,7 +26,7 @@ description: "Initialise or align repository-level agent setup in one run. Creat
 6. Apply setup automatically:
    - Write/update project `AGENTS.md`.
    - If `CLAUDE.md` does not exist and CC template is available, create it.
-   - Ensure `.gitignore` contains `TASK.md` and `REVIEW.md`.
+   - Ensure `.gitignore` contains `TASK.md`, `REVIEW.md`, and `HANDOFF.md`.
 7. Validate:
    - Confirm files exist after writing.
    - List unresolved placeholders (`<...>`) explicitly.

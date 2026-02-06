@@ -44,7 +44,7 @@ for the current task.
 | Skill | Purpose | Typical use |
 |-------|---------|-------------|
 | `init` | Initialise or align project-level agent setup | First run in a project from Codex |
-| `task-spec` | Build a structured `TASK.md` from a request | Planning without Claude `/plan` |
+| `task-spec` | Build a structured `TASK.md` from a request | Planning without Claude `/aq-plan` |
 | `handoff` | Build a review handoff bundle from git context | Default: pre-commit diff from `HEAD`, plus branch history |
 | `diff-review` | Review a diff against `TASK.md` and produce `REVIEW.md` | Review-agent workflow in Codex |
 | `commit-msg` | Draft commit messages from staged changes and repo style | Before creating a commit |

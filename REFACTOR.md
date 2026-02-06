@@ -191,7 +191,7 @@ When explicitly requested (e.g., "/aq-handoff from main to HEAD"):
 **Purpose**: Review changes and produce structured feedback.
 
 **Inputs** (priority order):
-1. `HANDOFF.md` (preferred - contains full context)
+1. `HANDOFF.md` (preferred - contains full context with metadata)
 2. `TASK.md` + git state (read directly)
 3. Inferred context from git state
 
@@ -199,7 +199,7 @@ When explicitly requested (e.g., "/aq-handoff from main to HEAD"):
 
 **Staleness check**:
 - If reading `HANDOFF.md`, compare "Prepared at" SHA with current `HEAD`
-- Warn if mismatch detected
+- Block review if mismatch detected, require regeneration
 
 **REVIEW.md structure**:
 ```markdown
@@ -561,7 +561,7 @@ Add follow-up section template:
    - **Recommendation**: Pre-commit is default. Committed-range only for post-merge review or historical analysis.
 
 4. **Staleness tolerance**: Should stale handoff block review or just warn?
-   - **Recommendation**: Warn loudly but allow review to proceed (reviewer judgement).
+   - **Decision**: Block review. Prevents reviewing outdated state and ensures handoff accuracy.
 
 5. **Codex command equivalence**: Should Codex skills use same naming?
    - **Recommendation**: Skills don't have the namespace collision concern. Keep skill names clean (`handoff`, `diff-review`), let command wrappers add `aq-` prefix.
@@ -575,6 +575,6 @@ Refactoring is successful when:
 3. ✓ `/aq-review` writes `REVIEW.md` by default
 4. ✓ Staleness detection prevents reviewing stale context
 5. ✓ Follow-up review explicitly tracks issue resolution
-6. ✓ Full workflow tested end-to-end in two-terminal setup
+6. ⏳ Full workflow tested end-to-end in two-terminal setup (requires post-deployment testing)
 7. ✓ Documentation updated (README, HELP, CLAUDE.md)
 8. ✓ No regression in existing functionality

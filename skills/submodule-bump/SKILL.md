@@ -1,7 +1,7 @@
 ---
 name: submodule-bump
 description: "Bump aq-standard-definitions submodule and regenerate code. Use when
-  protocol definitions or schemas have changed upstream. Triggers: /bump-defs command,
+  protocol definitions or schemas have changed upstream. Triggers: /aq-bump-defs command,
   or when a task requires updated definitions."
 ---
 

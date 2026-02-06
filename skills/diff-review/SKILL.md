@@ -11,7 +11,7 @@ description: "Review a git diff against a TASK.md specification and produce a
 
 ## Inputs
 
-- Task context (priority: project-local `TASK.md`, then `HANDOFF.md`, then
+- Task context (priority: `HANDOFF.md`, then project-local `TASK.md`, then
   explicit user context)
 - The git diff (provided via `handoff` skill, `agent-handoff` script, or
   `git diff` directly; committed and/or uncommitted)
@@ -22,14 +22,14 @@ description: "Review a git diff against a TASK.md specification and produce a
    - **First-pass review**: Triggered by `/aq-review` command or when `REVIEW.md` does not exist
    - **Follow-up review**: Triggered by `/aq-feedback` command or when `REVIEW.md` exists and user requests follow-up
 2. Resolve task context in this order:
-   a. Read `TASK.md` if present.
-   b. Else read task context from `HANDOFF.md` if present.
+   a. Read `HANDOFF.md` if present.
+   b. Else read `TASK.md` if present.
    c. Else infer context from user request and changed files.
 3. Perform staleness check when reading `HANDOFF.md`:
    a. Extract "Prepared at" SHA from metadata.
    b. Compare with current HEAD: `git rev-parse HEAD`.
-   c. If different, warn: "Handoff is stale (prepared at <sha>, HEAD is now <sha>). Consider regenerating handoff before reviewing."
-   d. Proceed with review but note staleness in REVIEW.md.
+   c. If different, BLOCK review and instruct: "Handoff is stale (prepared at <sha>, HEAD is now <sha>). Run `/aq-handoff` to regenerate before reviewing."
+   d. Do not proceed with review until handoff is fresh.
 4. Identify acceptance criteria/constraints from the resolved context.
 5. Review the diff file-by-file:
    a. Does each change serve the stated objective?
@@ -92,6 +92,6 @@ When triggered by `/aq-feedback` or when `REVIEW.md` exists:
 - If context was inferred (no `TASK.md`/`HANDOFF.md`), state assumptions clearly.
 - Issues include a suggested fix, not just a description.
 - Verification results include actual command output.
-- Staleness warnings are included when HANDOFF.md is outdated.
+- Review is blocked when HANDOFF.md is stale, requiring regeneration.
 - Follow-up reviews explicitly track resolution of prior issues.
 - `REVIEW.md` is written by default (not just printed).

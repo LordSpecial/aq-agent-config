@@ -1,7 +1,7 @@
 ---
 name: cubemx-verify
 description: "Verify CubeMX regeneration output for integrity. Use after the user
-  has regenerated from a .ioc file. Triggers: /cubemx-verify command, or after any
+  has regenerated from a .ioc file. Triggers: /aq-cubemx-verify command, or after any
   CubeMX regeneration."
 ---
 
