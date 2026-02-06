@@ -16,7 +16,9 @@ This repository provides:
 
 ## Installation
 
-### 1) Add as a flake input
+### Option A: Nix (Home Manager)
+
+#### 1) Add as a flake input
 
 ```nix
 {
@@ -26,7 +28,7 @@ This repository provides:
 }
 ```
 
-### 2) Import the module in Home Manager
+#### 2) Import the module in Home Manager
 
 ```nix
 {
@@ -41,13 +43,62 @@ This repository provides:
 }
 ```
 
-### 3) Apply
+#### 3) Apply
 
 ```bash
 home-manager switch
 # or
 nixos-rebuild switch
 ```
+
+### Option B: Manual (without Nix)
+
+Clone the repository and run the install script:
+
+```bash
+git clone https://github.com/your-org/aq-agent-config.git
+cd aq-agent-config
+bash scripts/install.sh
+```
+
+Or perform the steps manually:
+
+```bash
+REPO="path/to/aq-agent-config"
+
+# Claude Code: global instructions (concatenate base + CC additions)
+mkdir -p ~/.claude
+{ cat "$REPO/AGENTS.md"; echo; cat "$REPO/home/claude/CLAUDE.md"; } > ~/.claude/CLAUDE.md
+
+# Claude Code: settings and commands
+cp "$REPO/home/claude/settings.json" ~/.claude/settings.json
+cp -r "$REPO/home/claude/commands" ~/.claude/commands
+
+# Claude Code: skills
+cp -r "$REPO/skills" ~/.claude/skills
+
+# Codex: global instructions (concatenate base + Codex additions)
+mkdir -p ~/.codex
+{ cat "$REPO/AGENTS.md"; echo; cat "$REPO/home/codex/AGENTS.md"; } > ~/.codex/AGENTS.md
+
+# Codex: settings and skills
+cp "$REPO/home/codex/config.toml" ~/.codex/config.toml
+cp -r "$REPO/skills" ~/.codex/skills
+
+# Shared assets (templates and scripts)
+mkdir -p ~/.config/agent-config
+cp -r "$REPO/templates" ~/.config/agent-config/templates
+cp -r "$REPO/scripts" ~/.config/agent-config/scripts
+
+# Helper scripts on PATH (pick a directory already on your PATH)
+cp "$REPO/scripts/handoff.sh" ~/.local/bin/agent-handoff
+cp "$REPO/scripts/sync-projects.sh" ~/.local/bin/agent-sync-projects
+chmod +x ~/.local/bin/agent-handoff ~/.local/bin/agent-sync-projects
+```
+
+To update after pulling new changes, re-run the install script or repeat
+these steps. Unlike the Nix path, manual installs are not automatically kept
+in sync with the repository.
 
 ## What Gets Installed
 
@@ -142,14 +193,25 @@ CI runs `.github/workflows/validate.yml` on push and pull requests.
 
 ## Updating
 
+### Nix
+
 1. Update this repository.
 2. Update flake lock in consuming systems:
    ```bash
    nix flake update aq-agent-config
    ```
 3. Rebuild (`home-manager switch` or `nixos-rebuild switch`).
-4. Re-run project initialisation (`/aq-init` in Claude or `init` skill in Codex)
-   where needed.
+
+### Manual
+
+1. Pull latest changes:
+   ```bash
+   cd path/to/aq-agent-config && git pull
+   ```
+2. Re-run `bash scripts/install.sh` (or repeat the manual steps).
+
+After either method, re-run project initialisation (`/aq-init` in Claude or
+`init` skill in Codex) where needed.
 
 ## Troubleshooting
 

@@ -28,5 +28,6 @@ done
 # Shell script syntax.
 bash -n scripts/handoff.sh
 bash -n scripts/sync-projects.sh
+bash -n scripts/install.sh
 
 echo "Validation passed."
