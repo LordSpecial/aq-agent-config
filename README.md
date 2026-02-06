@@ -64,6 +64,26 @@ feedback addressed."
 
 ## Installation
 
+### Quick Dependencies
+
+The workflows in this repository assume these tools are available:
+
+- Required: `bash`, `git`, `rg` (ripgrep)
+- Optional but recommended: `tokei` (used by some skills for quick language sizing)
+
+Quick install examples:
+
+```bash
+# Ubuntu/Debian
+sudo apt update && sudo apt install -y bash git ripgrep tokei
+
+# macOS (Homebrew)
+brew install git ripgrep tokei
+
+# Nix
+nix profile install nixpkgs#bash nixpkgs#git nixpkgs#ripgrep nixpkgs#tokei
+```
+
 ### Option A: Nix (Home Manager)
 
 #### 1) Add as a flake input
@@ -185,13 +205,16 @@ This initialises or aligns:
 2. Implement against `TASK.md`.
 3. Prepare review context:
    Preferred: use `handoff` skill in Codex (or `/handoff` in Claude) to generate
-   handoff content from `TASK.md` and git diff.
-   Script fallback:
+   handoff content from current git state. Default scope is pre-commit changes
+   since `HEAD`, plus current-branch commit history.
+   If `TASK.md` is missing, handoff should infer task context and continue.
+   Script fallback (requires an existing `TASK.md`):
    ```bash
    agent-handoff TASK.md main HEAD
    ```
 4. Review against `TASK.md` and write project-local `REVIEW.md`.
-   For follow-up checks after comments, use `/feedback` in Claude.
+   Use `/review` or `/aq-review` in Claude. For follow-up checks after comments,
+   use `/feedback`.
 
 `TASK.md`, `REVIEW.md`, and optional `HANDOFF.md` are project-level temporary
 artefacts and should not be committed.
@@ -207,8 +230,9 @@ agent-sync-projects /path/to/projects
 - `/aq-help` - Print the Claude command help section
 - `/aq-init` - Initialise or align project agent setup
 - `/plan` - Generate a structured task specification (`TASK.md`)
-- `/handoff` - Prepare handoff context from `TASK.md` and git diff
+- `/handoff` - Prepare handoff context from git state (pre-commit friendly)
 - `/review` - First-pass review of a diff against `TASK.md`
+- `/aq-review` - Review alias with task-context fallback
 - `/feedback` - Follow-up review against existing `REVIEW.md` feedback
 - `/bump-defs` - Bump `aq-standard-definitions` and regenerate
 - `/cubemx-verify` - Check CubeMX regeneration integrity

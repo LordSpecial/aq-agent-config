@@ -4,7 +4,8 @@ Read the skill at `~/.claude/skills/diff-review/SKILL.md` and follow its instruc
 
 Read the REVIEW.md template at `~/.config/agent-config/templates/REVIEW.md`.
 
-Review the current branch's diff against the project-local `TASK.md` in the working directory.
-If no `TASK.md` exists, ask the user for the task context.
+Review current changes against project task context.
+Prefer project-local `TASK.md`; if no `TASK.md` exists, use `HANDOFF.md` or infer
+context from the user's request and changed files.
 
 $ARGUMENTS

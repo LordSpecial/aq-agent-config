@@ -8,7 +8,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 ### Added
 - Global `AGENTS.md` baseline (including feedback, skills, and handoff guidance)
 - Claude slash commands: `/aq-help`, `/aq-init`, `/plan`, `/handoff`, `/review`,
-  `/feedback`, `/bump-defs`, `/cubemx-verify`
+  `/aq-review`, `/feedback`, `/bump-defs`, `/cubemx-verify`
 - Codex config with skills enabled
 - Shared skills: `aq-help`, `init`, `task-spec`, `handoff`, `diff-review`,
   `commit-msg`, `submodule-bump`, `cubemx-verify`
@@ -25,3 +25,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 - Canonical project template source is `templates/project-agents.md` (to avoid drift)
 - Nix install now copies command/skill files into `~/.claude` and `~/.codex` so
   tool discovery does not depend on symlink indexing
+- Handoff/review workflow now supports pre-commit diffs and missing `TASK.md`
+  context fallback; added Claude `/aq-review` alias
+- Handoff defaults to pre-commit changes since `HEAD` and current-branch
+  first-parent history to reduce noisy branch-wide commit lists
