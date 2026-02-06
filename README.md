@@ -14,6 +14,53 @@ This repository provides:
 - Utility scripts (`scripts/`).
 - A consumable Home Manager module (`nix/module.nix`).
 
+## Example Dialogue (Firmware, Two Terminals)
+
+Use two terminals in the same project repository:
+
+- Terminal A: Claude Code (planning/review)
+- Terminal B: Codex (execution)
+
+Terminal A (Claude), user: `/aq-init`
+
+Claude (setup): "Project initialised. Updated `AGENTS.md`, created `CLAUDE.md`
+if missing, and ensured `.gitignore` ignores `TASK.md` and `REVIEW.md`."
+
+Terminal A (Claude), user:
+`/plan Add a CAN fault message when battery voltage drops below threshold.`
+
+Claude (planning): "Created `TASK.md` with acceptance criteria:
+- Publish CAN fault frame when `battery_voltage_mv < undervoltage_threshold_mv`
+- Clear fault when voltage recovers above hysteresis threshold
+- Add tests for set/clear behaviour and no-flap behaviour"
+
+Terminal B (Codex), user: "Execute `TASK.md`."
+
+Codex (execution): "Implemented undervoltage detection path, added CAN fault
+publish/clear logic, and added tests. Verification run:
+- `make build` pass
+- `make test` pass"
+
+Terminal B (Codex), user: "Prepare handoff for review."
+
+Codex: "Ran `agent-handoff TASK.md main HEAD > HANDOFF.md`."
+
+Terminal A (Claude), user: `/review`
+
+Claude (review): "Verdict: PASS WITH COMMENTS.
+Feedback:
+1. Add boundary test for exactly equal to threshold.
+2. Add test for recovery hysteresis to avoid chatter near threshold."
+
+Terminal B (Codex), user: "Apply reviewer feedback."
+
+Codex: "Added boundary and hysteresis tests, re-ran `make test` (pass)."
+
+Terminal A (Claude), user: `/review`
+
+Claude (final review): "Verdict: PASS. All `TASK.md` criteria and review
+feedback addressed."
+
 ## Installation
 
 ### Option A: Nix (Home Manager)
