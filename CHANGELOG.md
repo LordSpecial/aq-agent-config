@@ -3,6 +3,22 @@
 All notable changes to agent configuration are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [06/02/2026] - Refactor Consistency and Feedback Workflow Update
+
+### Added
+- Shared skill: `aq-apply-feedback` for executing agent follow-up after `REVIEW.md`
+  findings, including fix checklist, verification, and handoff refresh
+
+### Changed
+- Inferred-context guidance now uses current-branch commit subjects and full message
+  bodies, plus touched-file frequency summary
+- Handoff artefact guidance consistently includes `HANDOFF.md` across global and
+  tool-specific docs
+- Validation now requires `templates/HANDOFF.md`, enforces `aq-` command filename
+  prefixes, and checks for legacy slash-command references in active guidance
+- Skill trigger references and documentation now consistently use `aq-` prefixed
+  command names
+
 ## [06/02/2026] - Initial Release and Alignment Update
 
 ### Added
